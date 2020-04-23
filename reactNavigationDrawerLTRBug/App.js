@@ -1,41 +1,43 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+import React, {useState} from 'react';
+import { Button,StyleSheet, View } from 'react-native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
 
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+const HomeScreen = ({ navigation, setDrawerPosition }) => {
+  return (
+    <View style={styles.container}>
+      <Button
+        onPress={() => navigation.openDrawer()}
+        title="Open drawer"
+      />
+      <View style={{flexDirection: 'row'}}>
+        <Button onPress={() => setDrawerPosition('left')} title="Set position left" />
+        <Button onPress={() => setDrawerPosition('right')} title="Set position right" />
+      </View>
+    </View>
+  );
+}
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const Drawer = createDrawerNavigator();
 
-const App = () => (
-  <View style={styles.container}>
-    <Text>hello</Text>
-  </View>
-)
+const App = () => {
+  const [drawerPosition, setDrawerPosition] = useState('left')
+
+  return (
+    <NavigationContainer>
+      <Drawer.Navigator 
+        drawerPosition={drawerPosition}
+        initialRouteName="Home">
+        <Drawer.Screen name="Home" component={(props) => <HomeScreen {...props} setDrawerPosition={setDrawerPosition}/>} />
+        
+      </Drawer.Navigator>
+    </NavigationContainer>
+  );
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
+  container: { flex: 1, alignItems: 'center', justifyContent: 'center' }
 })
+
 
 export default App;
